@@ -1,7 +1,6 @@
 package clear.solutions.assignment.repositories;
 
 import clear.solutions.assignment.entities.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -11,8 +10,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class UserServiceImplTests {
@@ -34,7 +33,7 @@ public class UserServiceImplTests {
 
         List<User> actual = service.getAll();
 
-        Assertions.assertEquals(mockUsers, actual);
+        assertEquals(mockUsers, actual);
     }
 
     @Test
@@ -47,7 +46,21 @@ public class UserServiceImplTests {
 
         Optional<User> actual = service.getByEmail(email);
 
-        Assertions.assertEquals(mockUser, actual.get());
+        assertEquals(mockUser, actual.get());
+    }
+
+    @Test
+    public void searchByDateTest() {
+        List<User> mockUsers = List.of(
+                new User("email", "name", "laname", new Date(1L), "home", "123456789"),
+                new User("email1", "name1", "laname1", new Date(1L), "home1", "123456789"),
+                new User("email2", "name2", "laname2", new Date(1L), "home2", "123456789")
+        );
+
+        when(repository.findUsersByBirthDateBetween(any(Date.class), any(Date.class)))
+                .thenReturn(mockUsers);
+
+        assertEquals(service.searchByDate(new Date(1L), new Date(1L)), mockUsers);
     }
 
     @Test
@@ -57,7 +70,7 @@ public class UserServiceImplTests {
 
         when(repository.save(mockUser)).thenReturn(savedUser);
 
-        Assertions.assertEquals(service.create(mockUser), savedUser);
+        assertEquals(service.create(mockUser), savedUser);
     }
 
     @Test
@@ -68,7 +81,7 @@ public class UserServiceImplTests {
 
         when(repository.findById(email)).thenReturn(Optional.of(mockUser));
 
-        Assertions.assertEquals(service.update(email, updatedUser), updatedUser);
+        assertEquals(service.update(email, updatedUser), updatedUser);
     }
 
     @Test

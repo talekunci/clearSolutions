@@ -1,11 +1,11 @@
 package clear.solutions.assignment.controllers;
 
+import clear.solutions.assignment.entities.DateRange;
 import clear.solutions.assignment.entities.User;
 import clear.solutions.assignment.repositories.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +19,7 @@ import java.sql.Date;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,9 +55,32 @@ public class UserControllerTests {
     }
 
     @Test
+    public void searchUsersByBirthDateRangeTest() throws Exception {
+        Date from = new Date(1L);
+        Date to = new Date(10000000000L);
+        DateRange range = new DateRange(from, to);
+
+        List<User> mockUsers = List.of(
+                new User("email", "name", "laname", new Date(5000000L), "home", "123456789"),
+                new User("email1", "name1", "laname1", new Date(5000000L), "home1", "123456789")
+        );
+        when(service.searchByDate(any(Date.class), any(Date.class))).thenReturn(mockUsers);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/searchByDate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(range)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("email"))
+                .andExpect(jsonPath("$[0].firstname").value("name"))
+                .andExpect(jsonPath("$[1].email").value("email1"))
+                .andExpect(jsonPath("$[1].firstname").value("name1"));
+
+    }
+
+    @Test
     public void createTest() throws Exception {
         var mockUser = new User("email@email.com", "name", "laname", new Date(1L), "home", "123456789");
-        when(service.create(Mockito.any(User.class))).thenReturn(mockUser);
+        when(service.create(any(User.class))).thenReturn(mockUser);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +96,7 @@ public class UserControllerTests {
         var mockUser = new User(email, "name", "laname", new Date(1L), "home", "12345");
         var updatedUser = new User(email, "josh", "ross", new Date(1L), "home", "12345");
 
-        when(service.update(eq(email), Mockito.any(User.class))).thenReturn(updatedUser);
+        when(service.update(eq(email), any(User.class))).thenReturn(updatedUser);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/users/" + email)
                         .contentType(MediaType.APPLICATION_JSON)
