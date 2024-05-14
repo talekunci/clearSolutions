@@ -1,5 +1,6 @@
 package clear.solutions.assignment.controllers;
 
+import clear.solutions.assignment.entities.DateRange;
 import clear.solutions.assignment.entities.User;
 import clear.solutions.assignment.repositories.UserService;
 import jakarta.validation.Valid;
@@ -12,30 +13,35 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    UserService userService;
+    UserService service;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping
     public List<User> getAll() {
-        return userService.getAll();
+        return service.getAll();
+    }
+
+    @GetMapping("/searchByDate")
+    public List<User> searchUsersByBirthDateRange(@Valid @RequestBody DateRange range) {
+        return service.searchByDate(range.getFrom(), range.getTo());
     }
 
     @PostMapping
     public User create(@Valid @RequestBody User dto) {
-        return userService.create(dto);
+        return service.create(dto);
     }
 
     @PutMapping("/{email}")
     public User update(@PathVariable String email, @Valid @RequestBody User dto) {
-        return userService.update(email, dto);
+        return service.update(email, dto);
     }
 
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String email) {
-        userService.delete(email);
+        service.delete(email);
     }
 }

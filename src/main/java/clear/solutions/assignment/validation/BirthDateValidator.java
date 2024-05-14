@@ -5,13 +5,14 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-
+@Component
 public class BirthDateValidator implements ConstraintValidator<BirthDateValidation, Date> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

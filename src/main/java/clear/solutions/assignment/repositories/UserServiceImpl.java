@@ -6,32 +6,38 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    UserRepository repository;
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<User> getAll() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Optional<User> getByEmail(String email) {
-        return userRepository.findById(email);
+        return repository.findById(email);
+    }
+
+    @Override
+    public List<User> searchByDate(Date from, Date to) {
+        return repository.findUsersByBirthDateBetween(from, to);
     }
 
     @Override
     public User create(User dto) {
-        User save = userRepository.save(dto);
+        User save = repository.save(dto);
 
         logger.info("User {} has been created", save);
 
@@ -40,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(String email, User dto) {
-        Optional<User> optionalUser = userRepository.findById(email)
+        Optional<User> optionalUser = repository.findById(email)
                 .map(user -> {
                     if (StringUtils.hasText(dto.getEmail())) {
                         user.setEmail(dto.getEmail());
@@ -71,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            userRepository.save(user);
+            repository.save(user);
             logger.info("User {} has been updated", user.getEmail());
             return user;
         }
@@ -81,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(String email) {
-        userRepository.deleteById(email);
+        repository.deleteById(email);
         logger.info("User {} has been deleted", email);
     }
 }
