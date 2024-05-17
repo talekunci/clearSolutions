@@ -2,6 +2,7 @@ package clear.solutions.assignment.controllers;
 
 import clear.solutions.assignment.entities.DateRange;
 import clear.solutions.assignment.entities.User;
+import clear.solutions.assignment.repositories.UserRepository;
 import clear.solutions.assignment.repositories.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -36,6 +39,10 @@ public class UserControllerTests {
 
     @MockBean
     private UserService service;
+    @Autowired
+    private Repositories repositories;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void getTest() throws Exception {
@@ -108,11 +115,32 @@ public class UserControllerTests {
     }
 
     @Test
+    public void updateFields() throws Exception {
+        String email = "email@email.com";
+        var mockUser = new User(email, "name", "laname", new Date(1L), "home", "12345");
+        var updatedUser = new User(email, "josh", "ross", new Date(1L), "home", "12345");
+        Map<String, Object> entries = Map.ofEntries(
+                Map.entry("firstname", "josh"),
+                Map.entry("lastname", "ross")
+        );
+
+        when(service.update(eq(email), eq(entries))).thenReturn(updatedUser);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(entries)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("email").value("email@email.com"))
+                .andExpect(jsonPath("firstname").value("josh"))
+                .andExpect(jsonPath("lastname").value("ross"));
+    }
+
+    @Test
     public void deleteTest() throws Exception {
         String email = "email@email.com";
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/users/" + email))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         verify(service).delete(email);
     }
