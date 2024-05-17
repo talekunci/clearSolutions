@@ -1,5 +1,6 @@
 package clear.solutions.assignment.validation;
 
+import clear.solutions.assignment.controllers.exceptions.InvalidBirthDateException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.slf4j.Logger;
@@ -40,11 +41,11 @@ public class BirthDateValidator implements ConstraintValidator<BirthDateValidati
             }
         } else {
             logger.info("Invalid birth date {}", birthDate);
+            throw new InvalidBirthDateException("Invalid birth date " + birthDate);
         }
 
         logger.info("User is too young - date {}", birthDate);
-
-        return false;
+        throw new InvalidBirthDateException("User is too young - date " + birthDate);
     }
 
 }

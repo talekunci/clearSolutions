@@ -1,5 +1,6 @@
 package clear.solutions.assignment.validation;
 
+import clear.solutions.assignment.controllers.exceptions.InvalidBirthDateException;
 import clear.solutions.assignment.entities.DateRange;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -21,10 +22,10 @@ public class DateRangeValidator implements ConstraintValidator<DateRangeValidati
             }
         } catch (NullPointerException e) {
             logger.error("Field date 'to' is null", e);
+            throw new NullPointerException("Field date 'to' is null");
         }
 
         logger.info("The 'from' date is earlier than the 'to' date");
-
-        return false;
+        throw new InvalidBirthDateException("The 'from' date is earlier than the 'to' date");
     }
 }

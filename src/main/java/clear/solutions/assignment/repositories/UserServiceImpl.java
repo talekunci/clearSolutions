@@ -1,5 +1,6 @@
 package clear.solutions.assignment.repositories;
 
+import clear.solutions.assignment.controllers.exceptions.IllegalEmailFormatException;
 import clear.solutions.assignment.entities.User;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -81,14 +82,16 @@ public class UserServiceImpl implements UserService {
                     return user;
                 });
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            repository.save(user);
-            logger.info("User {} has been updated", user.getEmail());
-            return user;
+
+        if (optionalUser.isEmpty()) {
+            logger.info("User {} does not exist", email);
+            throw new NullPointerException("User " + email + " does not exist");
         }
 
-        return null;
+        User user = optionalUser.get();
+        repository.save(user);
+        logger.info("User {} has been updated", user.getEmail());
+        return user;
     }
 
     @Transactional
@@ -97,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         if (byId.isEmpty()) {
             logger.info("User {} does not exist", email);
-            return null;
+            throw new NullPointerException("User " + email + " does not exist");
         }
 
         User user = byId.get();
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
                         user.setEmail(entry.getValue().toString());
                     } else {
                         logger.info("User {} - new email {} doesn't match the pattern", email, entry.getValue());
-                        continue;
+                        throw new IllegalEmailFormatException("Illegal email format");
                     }
                     break;
                 case "firstname":
