@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.validation.ObjectError;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,6 +84,22 @@ public class UserServiceImplTests {
         when(repository.findById(email)).thenReturn(Optional.of(mockUser));
 
         assertEquals(service.update(email, updatedUser), updatedUser);
+    }
+
+    @Test
+    public void updateMapTest() {
+        String email = "email@email.com";
+        var mockUser = new User(email, "name", "laname", new Date(1L), "home", "12345");
+        var updatedUser = new User(email, "josh", "ross", new Date(1L), "home", "12345");
+
+        Map<String, Object> body = Map.ofEntries(
+            Map.entry("firstname", "josh"),
+            Map.entry("lastname", "ross")
+        );
+
+        when(repository.findById(email)).thenReturn(Optional.of(mockUser));
+
+        assertEquals(service.update(email, body), updatedUser);
     }
 
     @Test
