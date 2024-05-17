@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserService {
@@ -20,6 +21,9 @@ public interface UserService {
 
     @Transactional
     User update(String email, User dto);
+
+    @Transactional
+    User update(String email, Map<String, Object> body);
 
     void delete(String email);
 

@@ -8,12 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    UserService service;
+    private final UserService service;
 
     public UserController(UserService service) {
         this.service = service;
@@ -34,9 +35,14 @@ public class UserController {
         return service.create(dto);
     }
 
-    @PutMapping("/{email}")
+    @PutMapping("/{email}/all")
     public User update(@PathVariable String email, @Valid @RequestBody User dto) {
         return service.update(email, dto);
+    }
+
+    @PutMapping("/{email}")
+    public User updateFields(@PathVariable String email, @RequestBody Map<String, Object> body) {
+        return service.update(email, body);
     }
 
     @DeleteMapping("/{email}")
