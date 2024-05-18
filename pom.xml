@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>clear.solutions</groupId>
 	<artifactId>assignment</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.5-SNAPSHOT</version>
 	<name>assignment</name>
 	<description>Test assignment for Clear Solutions</description>
 	<properties>
