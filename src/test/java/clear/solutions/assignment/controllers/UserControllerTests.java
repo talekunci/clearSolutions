@@ -105,7 +105,7 @@ public class UserControllerTests {
 
         when(service.update(eq(email), any(User.class))).thenReturn(updatedUser);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + email)
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/" + email + "/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(mockUser)))
                 .andExpect(status().isOk())

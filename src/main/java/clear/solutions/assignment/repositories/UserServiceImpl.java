@@ -1,7 +1,7 @@
 package clear.solutions.assignment.repositories;
 
-import clear.solutions.assignment.controllers.exceptions.IllegalEmailFormatException;
 import clear.solutions.assignment.entities.User;
+import clear.solutions.assignment.validation.exceptions.IllegalEmailFormatException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

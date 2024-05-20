@@ -1,4 +1,4 @@
-package clear.solutions.assignment.controllers.exceptions;
+package clear.solutions.assignment.validation.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

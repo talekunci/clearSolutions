@@ -1,9 +1,9 @@
 package clear.solutions.assignment.controllers.handlers;
 
 import clear.solutions.assignment.controllers.UserController;
-import clear.solutions.assignment.controllers.exceptions.IllegalEmailFormatException;
-import clear.solutions.assignment.controllers.exceptions.InvalidBirthDateException;
-import clear.solutions.assignment.controllers.exceptions.InvalidDateRangeException;
+import clear.solutions.assignment.validation.exceptions.IllegalEmailFormatException;
+import clear.solutions.assignment.validation.exceptions.InvalidBirthDateException;
+import clear.solutions.assignment.validation.exceptions.InvalidDateRangeException;
 import clear.solutions.assignment.entities.DateRange;
 import clear.solutions.assignment.entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-public class ExceptionHandlerTests {
+public class git statusExceptionHandlerTests {
 
     private MockMvc mockMvc;
 

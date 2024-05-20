@@ -1,7 +1,7 @@
 package clear.solutions.assignment.validation;
 
-import clear.solutions.assignment.controllers.exceptions.InvalidDateRangeException;
 import clear.solutions.assignment.entities.DateRange;
+import clear.solutions.assignment.validation.exceptions.InvalidDateRangeException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.slf4j.Logger;

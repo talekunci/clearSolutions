@@ -1,8 +1,8 @@
 package clear.solutions.assignment.controllers.handlers;
 
-import clear.solutions.assignment.controllers.exceptions.IllegalEmailFormatException;
-import clear.solutions.assignment.controllers.exceptions.InvalidBirthDateException;
-import clear.solutions.assignment.controllers.exceptions.InvalidDateRangeException;
+import clear.solutions.assignment.validation.exceptions.IllegalEmailFormatException;
+import clear.solutions.assignment.validation.exceptions.InvalidBirthDateException;
+import clear.solutions.assignment.validation.exceptions.InvalidDateRangeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
