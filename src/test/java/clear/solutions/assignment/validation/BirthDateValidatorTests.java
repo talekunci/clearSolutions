@@ -50,6 +50,7 @@ class BirthDateValidatorTests {
 
     @Test
     void invalidAgeTest() {
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1);
         Date invalidDate = new Date(calendar.getTimeInMillis());
 
         Assertions.assertFalse(validator.isValid(invalidDate, context));

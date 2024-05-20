@@ -34,11 +34,6 @@ public class ExceptionsHandler {
         return Response.builder(e, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Response> nullPointerHandler(NullPointerException e) {
-        return Response.builder(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Response> httpMessageNotReadableHandler(HttpMessageNotReadableException e) {
         return Response.builder(e, HttpStatus.BAD_REQUEST);

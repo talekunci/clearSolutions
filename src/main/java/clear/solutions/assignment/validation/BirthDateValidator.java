@@ -45,7 +45,7 @@ public class BirthDateValidator implements ConstraintValidator<BirthDateValidati
         }
 
         logger.info("User is too young - date {}", birthDate);
-        throw new InvalidBirthDateException("User is too young - date " + birthDate);
+        return false;
     }
 
 }
